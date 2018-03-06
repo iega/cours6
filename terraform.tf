@@ -87,6 +87,6 @@ resource "google_compute_firewall" "ssh" {
 # Definir le fournisseur nuagique
 provider "google" {
   credentials = "${file("account.json")}"
-  project     = "cours6"
+  project     = "cours6-197214"
   region      = "northamerica-northeast1"
 }
