@@ -12,11 +12,11 @@ resource "google_compute_instance_template" "instance-template-apache" {
   metadata_startup_script = "sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install apache2 && sudo systemctl start apache2"
 
   network_interface {
-    subnetwork    = "${google_compute_subnetwork.cr460-subnet1.self_link}" # Interface Reseau
+    subnetwork    = "${google_compute_subnetwork.cours6-subnet1.self_link}" # Interface Reseau
     access_config = {}
   }
 
-  tags = ["web", "patate", "cr460", "linux"]
+  tags = ["web", "patate", "cours6", "linux"]
 }
 
 resource "google_compute_instance_group_manager" "instance_group" {
@@ -47,22 +47,22 @@ resource "google_compute_autoscaler" "autoscaler" {
 }
 
 #Definition du sous-reseau
-resource "google_compute_subnetwork" "cr460-subnet1" {
-  name          = "cr460-subnet1"                             # Nom
+resource "google_compute_subnetwork" "cours6-subnet1" {
+  name          = "cours6-subnet1"                             # Nom
   ip_cidr_range = "10.0.0.0/24"                               # Adresse IP
-  network       = "${google_compute_network.cr460.self_link}" # Liens vers le reseau
+  network       = "${google_compute_network.cours6.self_link}" # Liens vers le reseau
   region        = "northamerica-northeast1"                   # Region
 }
 
 # Definition du VPC
-resource "google_compute_network" "cr460" {
-  name                    = "cr460" # Nom du reseau
+resource "google_compute_network" "cours6" {
+  name                    = "cours6" # Nom du reseau
   auto_create_subnetworks = "false"
 }
 
 resource "google_compute_firewall" "http" {
   name    = "http"
-  network = "${google_compute_network.cr460.name}"
+  network = "${google_compute_network.cours6.name}"
 
   allow {
     protocol = "tcp"
@@ -74,7 +74,7 @@ resource "google_compute_firewall" "http" {
 
 resource "google_compute_firewall" "ssh" {
   name    = "ssh"
-  network = "${google_compute_network.cr460.name}"
+  network = "${google_compute_network.cours6.name}"
 
   allow {
     protocol = "tcp"
@@ -87,6 +87,6 @@ resource "google_compute_firewall" "ssh" {
 # Definir le fournisseur nuagique
 provider "google" {
   credentials = "${file("account.json")}"
-  project     = "cr460-cours6"
+  project     = "cours6"
   region      = "northamerica-northeast1"
 }
